@@ -1,0 +1,21 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["build", "-t", "gcr.io/nashwan-gcp-demo-adfolks/hello-app:$TAG_NAME", "."]
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "gcr.io/nashwan-gcp-demo-adfolks/hello-app:$TAG_NAME"]
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['apply', '-f', 'manifests/']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=nashwan-demo'
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: [
+   'set', 
+   'image', 
+   'deployment', 
+   'hello-app', 
+   'hello-app=gcr.io/nashwan-gcp-demo-adfolks/hello-app:$TAG_NAME'
+  ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=nashwan-demo'

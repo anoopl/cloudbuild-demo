@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app
+  labels:
+    app: hello
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: app
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: app
+    spec:
+      containers:
+      - name: hello-app
+        image: gcr.io/nashwan-gcp-demo-adfolks/hello-app:1.0.0
+        ports:
+        - containerPort: 8080
